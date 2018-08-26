@@ -4,113 +4,84 @@ import copy
 
 estado_inicial = [[1,2,3],[4,0,5],[6,7,8]]
 #estado_inicial = [[1,2,3],[4,5,6],[7,8,0]]
-pila_estados = []
 #objetivo = [[1,2,3],[4,5,6],[7,8,0]]
 objetivo = [[0,1,2],[3,4,5],[6,7,8]]
-resuelto = False
 
-class Estado():
+
+class Nodos():
 
     def __init__(self):
         self.estado = []
-        self.piezas_fueraLugar = 0
-
-def Posicion(estados, item):
-   return [(ind, estado.index(item)) for ind, estado in enumerate(estados) if item in estado]
-
-def Inicializar(estado_inicial):
-    pila_estados.append(estado_inicial)
-
-def CalcularMovimientos(posicion):
-	movimientos = ['arriba','abajo','izquierda','derecha']
-	if posicion[0][0] == 0:
-		movimientos.remove('arriba')
-	if posicion[0][0] == 2:
-		movimientos.remove('abajo')
-	if posicion[0][1] == 0:
-		movimientos.remove('izquierda')
-	if posicion[0][1] == 2 :
-	    movimientos.remove('derecha')
-	return movimientos
-
-def ResolverMovimiento(posicion_nueva, posicion, pila_estados):
-    copia_estado = []
-    copia_estado = copy.deepcopy(pila_estados[-1]) # deepcopy para que la copia no referencie a la lista original
-    numero = copia_estado[posicion_nueva[0]][posicion_nueva[1]] # Extraigo el valor que hay en la posicion que se tiene que mover el 0
-    copia_estado[posicion[0][0]][posicion[0][1]] = numero # Ciclo Burbuja
-    copia_estado[posicion_nueva[0]][posicion_nueva[1]] = 0
-    return copia_estado
-
-def EvaluarEstados(nuevos_estados,objetivo): #Evaluar cantidad de piezas fuera de lugar
-    piezas_fueraLu = 0
-    #Evaluo el tope de pila porque lo hago cada vez que realizo un movimiento 
-    for i in range(0,3):
-        for j in range(0,3):
-            if objetivo[i][j] != nuevos_estados[-1].estado[i][j] and nuevos_estados[-1].estado[i][j] != 0:
-                piezas_fueraLu += 1
-    nuevos_estados[-1].piezas_fueraLugar = piezas_fueraLu
-
-def OrdenarEstados(nuevos_estados):
-    aux = Estado()
-    c = 0
-    for item in nuevos_estados:
-        c1 = 0
-        for item2 in nuevos_estados:
-            if item.piezas_fueraLugar < item2.piezas_fueraLugar:
-                aux = item2
-                nuevos_estados[c1] = item
-                nuevos_estados[c] = aux
-            c1 += 1
-        c += 1
-    print("hola")
-        
-        
-
-def Accion(pila_estados, posicion):
-    movimientos = CalcularMovimientos(posicion)
-    cant_estados = len(movimientos)
-    nuevos_estados = [] # Lista de objetos de estado
-    for movimiento in movimientos:
-        objeto_estado = Estado() # Inicializo un nuevo objeto
-        if movimiento == 'arriba':
-            posicion_nueva = [] 
-            posicion_nueva.append(posicion[0][0] - 1) #Calculo nueva posicion dependiendo donde me tenga que mover
-            posicion_nueva.append(posicion[0][1])
-            objeto_estado.estado = (ResolverMovimiento(posicion_nueva, posicion, pila_estados))
-        elif movimiento == 'abajo':
-            posicion_nueva = [] 
-            posicion_nueva.append(posicion[0][0] + 1) #Calculo nueva posicion dependiendo donde me tenga que mover
-            posicion_nueva.append(posicion[0][1])
-            objeto_estado.estado = (ResolverMovimiento(posicion_nueva, posicion, pila_estados))
-        elif movimiento == 'izquierda':
-            posicion_nueva = [] 
-            posicion_nueva.append(posicion[0][0]) #Calculo nueva posicion dependiendo donde me tenga que mover
-            posicion_nueva.append(posicion[0][1] - 1)
-            objeto_estado.estado = (ResolverMovimiento(posicion_nueva, posicion, pila_estados))
-        else:
-            posicion_nueva = [] 
-            posicion_nueva.append(posicion[0][0]) #Calculo nueva posicion dependiendo donde me tenga que mover
-            posicion_nueva.append(posicion[0][1] + 1 )
-            objeto_estado.estado = (ResolverMovimiento(posicion_nueva, posicion, pila_estados))
-        nuevos_estados.append(objeto_estado)
-        EvaluarEstados(nuevos_estados, objetivo)
-    OrdenarEstados(nuevos_estados)
-    print("hola")
-    
-
-def Solucionar(pila_estados):
-    global resuelto
-    if len(pila_estados) == 0:
-        Inicializar(estado_inicial)
-    else:
-        if pila_estados[-1] == objetivo:
-            resuelto = True
-        else:
-            Accion(pila_estados, Posicion(pila_estados[-1], 0))
-
-while resuelto == False:
-    Solucionar(pila_estados)
-print(resuelto)
+        self.nodo_padre = []
+        self.accion = []
+        self.ruta_costo = 0
 
 
-    
+def Posicion(estado, item):
+    for fila_index, fila in enumerate(estado):
+        for col_index, element in enumerate(fila):
+            if element == item:
+                return fila_index,col_index
+               
+def Meta(estado):
+    return estado == meta 
+
+def Accion(estado):
+    zero_fila, zero_col = Posicion(estado, 0)
+    acciones = []
+    Nodos_hijos = [] # Lista de objetos de estado
+    Nodo_hijos = Nodo() # Inicializo un nuevo objeto
+    if zero_fila > 0:
+        acciones.append((zero_fila -1, zero_col ))
+    if zero_fila < 0:
+        acciones.append((zero_fila+1, zero_col ))
+    if zero_col > 0:
+        acciones.append((zero_fila, zero_col  -1))
+    if zero_col < 2:
+        acciones.append((zero_fila, zero_col + 1))
+
+    return acciones
+
+def Resultado(estado, accion):
+    zero_fila, zero_col = Posicion(estado, 0)
+    destino_fila, destino_col = accion
+
+    estado = copy.deepcopy(estado)
+    estado[zero_fila][zero_col] = estado[destino_fila][destino_col]
+    estado[destino_fila][destino_col] = 0
+
+    return estado
+
+def costo(estado1, accion, estado2):
+    return 1
+
+def estado_inicial(estado):
+    return estado
+
+def Busqueda_nodos(estado):
+    resultado = False
+    nodo = Nodos()
+    nodo.estado = estado_inicial(estado)
+    nodo.ruta_costo = 0
+
+	if Meta(nodo.estado) == True:
+		return resultado = True
+	frontera.append(nodo)
+    explorados = []
+	
+    while resueltado == False:
+		if len(frontera) == 0:
+			return Resultado = False
+		nodo = frontera.pop()
+		explorados.append(nodo.estado)
+        lista_acciones = accion(nodo.estado)
+		for action in lista_acciones:
+            nodo_hijo = Nodos()
+			nodo_hijo.estado = Resultado(nodo.estado,action)
+			if nodo_hijo is not in explorados or frontera: 
+				if Meta(nodo_hijo.estado) == True:
+					return resuelto = True
+					frontera.append(nodo_hijo)
+			
+			
+print(Resultado(estado_inicial, [2,1]))
