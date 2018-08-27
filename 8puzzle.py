@@ -24,7 +24,14 @@ def Posicion(estado, item):
                 return fila_index,col_index
                
 def Meta(estado):
+<<<<<<< HEAD
     return estado == objetivo
+=======
+    if estado == objetivo:
+        return True
+    else:
+        return False
+>>>>>>> 9bdaa3815029bed3a2723a9498b97b5942bd2394
 
 def Accion(estado):
     zero_fila, zero_col = Posicion(estado, 0)
@@ -59,22 +66,30 @@ def estado_inicial(estado):
     return estado
 
 def Busqueda_nodos(estado):
-    resultado = False
+    solucionado = False
     nodo = Nodos()
     nodo.estado = estado_inicial(estado)
     nodo.ruta_costo = 0
+<<<<<<< HEAD
     
 	if Meta(nodo.estado) == True:
 		return resultado = True
 	frontera.append(nodo)
+=======
+
+    if Meta(nodo.estado):
+        return solucionado == True
+    frontera.append(nodo)
+>>>>>>> 9bdaa3815029bed3a2723a9498b97b5942bd2394
     explorados = []
-	
-    while resueltado == False:
+
+    while solucionado == False:
 		if len(frontera) == 0:
-			return Resultado = False
-		nodo = frontera.pop()
+			return solucionado == False
+		#nodo = frontera.pop() Ver si se hace
 		explorados.append(nodo.estado)
-        lista_acciones = accion(nodo.estado)
+        lista_acciones = Accion(nodo.estado)
+
 		for action in lista_acciones:
             nodo_hijo = Nodos()
 			nodo_hijo.estado = Resultado(nodo.estado,action)
