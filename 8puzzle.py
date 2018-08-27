@@ -24,7 +24,7 @@ def Posicion(estado, item):
                 return fila_index,col_index
                
 def Meta(estado):
-    return estado == meta 
+    return estado == objetivo
 
 def Accion(estado):
     zero_fila, zero_col = Posicion(estado, 0)
@@ -63,7 +63,7 @@ def Busqueda_nodos(estado):
     nodo = Nodos()
     nodo.estado = estado_inicial(estado)
     nodo.ruta_costo = 0
-
+    
 	if Meta(nodo.estado) == True:
 		return resultado = True
 	frontera.append(nodo)
