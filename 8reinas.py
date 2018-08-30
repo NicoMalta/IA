@@ -4,10 +4,11 @@ class Reinas:
     def __init__(self):
         self.tamaño = 4
         self.soluciones = 0
-        self.Resolver()
-
-    def Resolver(self):
-        posiciones = [-1] * self.tamaño
+        self.posiciones = [-1] * self.tamaño
+        self.Resolver(self.posiciones)
+        
+    def Resolver(self, posiciones):
+      # posiciones = [-1] * self.tamaño
         self.Accion(posiciones, 0)
         print("Found", self.soluciones, "soluciones.")
     
@@ -19,7 +20,8 @@ class Reinas:
             for col in range(self.tamaño):
                 if self.Validar_lugar(posiciones, fila_actual, col):
                     posiciones[fila_actual] = col
-                    self.Accion(posiciones, fila_actual + 1)   
+                    #self.Accion(posiciones, fila_actual + 1)   
+                    self.Imprimir(posiciones)
  
     def Validar_lugar(self, posiciones, filas_ocupadas, col):
         for i in range(filas_ocupadas):
