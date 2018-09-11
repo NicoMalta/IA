@@ -11,20 +11,37 @@ class Grafo(object):
         self.inicio = inicio
 
     def profundidad(self, inicio):
+        frontera = []  """Se saca de atras para adelante LIFO"""
+        procesados = []
         """Usar busqueda en profundidad desde inicio a todo el grafo"""
         self._init_grafo(inicio)
-        q = [inicio]
-        self.encontrado[inicio] = True
 
-        while q:
-            v = q.pop()
-            self.procesado[v] = True
+        frontera.append(inicio)
+        
+        while len(frontera) != 0 or solucionado == true :
+            nodoActual = frontera[-1]
+            if Meta(nodoActual.estado):
+                solucionado = True
+                return solucionado
+            else:
+                procesados.append(nodoActual)
+                accionesPosibles = Accion(nodoActual.estado)
+                for accion in accionesPosibles:
+                    tieneHijos = False
+                    nodoHijo = Resultado(nodoActual.estado , accion)
+                    if (nodoHijo not in procesados):
+                        frontera.append(nodoHijo)
+                        tieneHijos = True
+                        break
+                if tieneHijos == False:
+                    frontera.pop()
+            
+                    
+            
+            
 
-            for vecino in self.ady[v]:
-                if not self.encontrado[vecino]:
-                    q.append(vecino)
-                    self.encontrado[vecino] = True
-                    self.padre[vecino] = v
+        
+
 
     def construir_camino(self, destino):
         """Devuelve el camino entre los vertices inicio y destino"""
