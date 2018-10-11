@@ -3,8 +3,8 @@ import operator
 import copy
 
 estado_inicial = ([1,3,6],
-                  [0,4,2],
-                  [7,5,8])
+                  [7,8,4],
+                  [0,5,2])
 #estado_inicial = [[1,2,3],[4,5,6],[7,8,0]]
 #objetivo = [[1,2,3],[4,5,6],[7,8,0]]
 objetivo = ([1,2,3],
@@ -18,6 +18,7 @@ class Nodo:
         self.nodo_padre = None
         self.accion = []
         self.ruta_costo = 0
+        self.piesasDesacomodadas = 0
 
 def Posicion(estado, item):
     for fila_index, fila in enumerate(estado):
@@ -146,4 +147,63 @@ def Busqueda_Profundidad(estadoInicial):
             nivel += 1
          
             			
-print(Busqueda_Amplitud(estado_inicial))
+def Busqueda_aEstrella(estado):
+    solucionado = False
+    nodo_inicial = Nodo()
+    nodo_inicial.estado = Estado_inicial(estado)
+    nodo_inicial.ruta_costo = 0
+    frontera = []
+    procesados = []
+    piesasDesacomodadas = 0
+
+    ListaNodoPrioridad = []
+
+    if Meta(nodo_inicial.estado):
+        solucionado = True
+        return solucionado
+    frontera.append(nodo_inicial)
+    explorados = []
+    while solucionado == False:
+        nodo = Nodo()
+        if len(frontera) == 0:
+            solucionado = False
+            return solucionado
+
+        nodo = frontera.pop() #FIFO
+
+        if Meta(nodo.estado) == True:
+            solucionado = True
+            procesados.append(nodo)
+            return solucionado,len(procesados)
+        else:
+            procesados.append(nodo)
+
+        if nodo.estado not in explorados:
+            explorados.append(nodo.estado)
+            ListaNodoPrioridad = []
+            for action in Accion(nodo.estado):
+                nodo_hijo = Nodo()
+                #nodo_hijo.nodo_padre = nodo
+                nodo_hijo.estado = Resultado(nodo.estado,action)
+                nodo_hijo.piesasDesacomodadas = euristica(nodo_hijo.estado)
+                nodo.accion.append(tuple(action))
+                ListaNodoPrioridad.append(nodo_hijo)
+                ListaNodoPrioridad.sort(key=lambda nodo: nodo.piesasDesacomodadas)
+            
+            for nodo in reversed(ListaNodoPrioridad):
+                frontera.append(nodo) 
+
+        	   
+
+def euristica(estado):
+    contador = 0
+    for x in range(0, 3):
+        if estado[x][0] != objetivo[x][0]:
+            contador += 1
+        if estado[x][1] != objetivo[x][1]:
+            contador += 1
+        if estado[x][2] != objetivo[x][2]:
+            contador += 1
+    return contador
+
+print(Busqueda_aEstrella(estado_inicial))
