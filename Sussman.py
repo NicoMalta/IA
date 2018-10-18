@@ -11,8 +11,8 @@ def actions(state):
     while len(list_cubes) > 1:
         random = randint(0, (len(list_cubes)-1))
         del list_cubes[random]
+        
     cube, col = list_cubes[0]
-    del state[col][-1] #estara bien?
     list_actions = []
     if col == 0:
         list_actions.append([cube,col+1])
