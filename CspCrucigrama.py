@@ -78,10 +78,10 @@ restricciones.append((('11H', '9V'), interseccion(1, 1)))
 
 problem = CspProblem(variables, dominios, restricciones)
 
-print('backtrack:'
-,result = backtrack(problem,
+print('backtrack:')
+result = backtrack(problem,
                    variable_heuristic=MOST_CONSTRAINED_VARIABLE,
                    value_heuristic=LEAST_CONSTRAINING_VALUE,
-                   inference=True))
+                   inference=True)
 
 print(result)
