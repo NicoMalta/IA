@@ -206,4 +206,4 @@ def euristica(estado):
             contador += 1
     return contador
 
-print(Busqueda_aEstrella(estado_inicial))
+print(Accion(estado_inicial))
