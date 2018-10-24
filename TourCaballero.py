@@ -1,9 +1,9 @@
 state = [[0,0], 0]
 goal = 64
-
+# Estado plantear con control de estados repetidos: ((0,0),((0,0),...))
 def is_goal(state):
     return state[-1] == goal
-
+#En actions sacar cantidad de estados ya pintados
 
 def actions(state):
     row, col = state[0]
@@ -35,7 +35,7 @@ def actions(state):
             agrego = True
     
     return list_actions
-
+#Agrego estado a la lista
 def result(state,action):
     state[0] = action
     state[-1] =+ 1 
@@ -43,7 +43,7 @@ def result(state,action):
 
 def cost(s1,a,s2):
     return 1
-
+#Cantidad de lo q falta 64- len(estados)
 def heuristic(state):
     jumps = state[-1]
     return (goal - jumps) 

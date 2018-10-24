@@ -1,17 +1,13 @@
 
 # coding: utf-8
-from simpleai.search import astar, breadth_first, SearchProblem
-from simpleai.search.viewers import WebViewer
+from simpleai.search import astar, breadth_first, SearchProblem,depth_first
+from simpleai.search.viewers import WebViewer, BaseViewer
 
-orillas = ([0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[1,0],[2,0],[3,0],[4,0],[5,0],[5,1], [5,2],[5,3],[5,4],[5,5],[4,5],[3,5],[4,5])
+orillas = ((0,0),(0,1),(0,2),(0,3),(0,4),(0,5),(1,0),(2,0),(3,0),(4,0),(5,0),(5,1), (5,2),(5,3),(5,4),(5,5),(4,5),(3,5),(4,5))
 
-state = ([0,0],[[2,1],[3, 4],[4, 2]],[])
-
+state = ((0,0),((2,1),(3, 4),(4, 2)),())
+salve_pibe = []
 class TpProblem(SearchProblem):
-
-    def __init__(self, people_number):
-        self.N = people_number
-        super(TpProblem, self).__init__(tuple(state))
 
     def is_goal(self, state):
         return len(state[1]) == 0
@@ -21,42 +17,45 @@ class TpProblem(SearchProblem):
 
     def actions(self,state):
         row, col = state[0]
-        tuple_actions = []
+        actions = []
         if row > 0:
-            if is_valid((row -1, col ), state):
-                tuple_actions.append((row -1, col ))
+            if is_valid((row -1, col), state):
+                actions.append((row -1, col ))
         if row < 5:
-            if is_valid((row +1, col ), state):
-                tuple_actions.append((row+1, col ))
+            if is_valid((row +1, col), state):
+                actions.append((row+1, col ))
         if col > 0:
             if is_valid((row, col -1), state):
-                tuple_actions.append((row, col  -1))
+                actions.append((row, col  -1))
         if col < 2:
             if is_valid((row, col +1), state):
-                tuple_actions.append((row, col + 1))
+                actions.append((row, col + 1))
+        if len(state[1]) != 0 and state[0] != (0,0) :
+            for action in actions:
+                if action in orillas:
+                    actions.remove(action)
+        return tuple(actions)
 
-        return tuple(tuple_actions)
-
-
-    def is_valid(self,pos,state):
-        
-        for pos_traveled in state[-1]:
-            if pos == pos_traveled:
-                return False
-        return True
 
     def result(self,state,action):
         row_action, col_action = action
-        if [row_action, col_action] in state[1]:
+        support_state = list(state)
+        if (row_action, col_action) in state[1]:
             count = 0
-            for people in state[1]:
-                if people == [row_action, col_action]:
-                    del state[1][count]
-        state[0][0] = row_action
-        state[0][1] = col_action
-        if [row_action, col_action] not in orillas:
-            state[-1].append([row_action,col_action])
-        return tuple(state)
+            aux_state = list(state[1])
+            for people in aux_state:
+                if people == (row_action, col_action):
+                    salve_pibe.append(len(salve_pibe)+1)
+                    del aux_state[count]
+                count += 1
+            support_state[1] = tuple(aux_state)
+        support_state[0] = action
+        aux_state = list(state[2])
+        if (row_action, col_action) not in orillas:
+            aux_state.append(action)
+            support_state[2] = tuple(aux_state)
+        state = tuple(support_state)
+        return state
 
     def heuristic(self,state):
         distances = []
@@ -66,6 +65,22 @@ class TpProblem(SearchProblem):
         else:
             for pos in orillas:
                 distances.append(pos)
-        return max(distances)
+        return min([manhattan(x, state[0]) for x in distances])
 
-result = breadth_first(TpProblem(3), graph_search=True, viewer=WebViewer())
+
+def is_valid(pos,state):
+    for pos_traveled in state[-1]:
+        if pos == pos_traveled:
+            return False
+    return True
+
+def manhattan(pos1,pos2):
+    x1, y1 = pos1
+    x2, y2 = pos2
+    return abs(x2 - x1) + abs(y2 - y1)
+
+my_viewer = BaseViewer()
+result = depth_first(TpProblem(state), graph_search=True, viewer=my_viewer)
+print(my_viewer.stats)
+print(salve_pibe)
+print(my_viewer.solution_node)
