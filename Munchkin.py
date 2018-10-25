@@ -5,28 +5,30 @@ from simpleai.search import (backtrack, CspProblem, LEAST_CONSTRAINING_VALUE,
                              min_conflicts, MOST_CONSTRAINED_VARIABLE)
 
 variables = [1,2,3]
-armaduras = []
-armas = []
-pocion = []
-armaduras.append(['Armadura',1,1,800])
-armaduras.append(['Armadura',2,3,1000])
-armaduras.append(['Armadura',3,5,1300])
-armas.append(['Espada',1,1,500])
-armas.append(['Espada',1,2,700])
-armas.append(['Espada',2,4,1000])
-armas.append(['Garrote',3,6,1300])
-pocion.append(['Poción',1,5,1500])
-pocion.append(['Poción',2,2,800])
-pocion.append(['Poción',3,3,1200])
-dominio = {}
+dominio = {
+    1: ['Armadura', 'Madera',1,800],
+    2: ['Armadura', 'Hierro',3,1000],
+    3: ['Armadura', 'Acero',5,1300],
+    4: ['Espada Madera',1,500],
+    5: ['Espada Hierro',2,700],
+    6: ['Espada Acero',4,1000],
+    7: ['Garrote Madera',6,1300],
+    8: ['Posion Fuego',1,5,1500],
+    9: ['Posion Hielo',2,2,800],
+    10: ['Posion Acido',3,3,1200]
+}
 restricciones = []    
-dominio[1] = [x for x in armaduras]
-dominio[2] = [x for x in armas]
-dominio[3] = [x for x in pocion]
+
 
 def una_armadura(vars, vals):
-    carta1 = vals
-    return len(carta1) == 1
+    cantidad = 0
+    if 'Armadura' in vals:
+        cantidad += 1
+    if cantidad < 2:
+        return True
+    else:
+        return False
+
 
 restricciones.append((variables, una_armadura))
 
