@@ -2,7 +2,7 @@ from simpleai.search import astar, SearchProblem
 from simpleai.search.viewers import WebViewer, BaseViewer
 
 state = (3,3)
-soldiers = ((0,0),(0,1),(0,4),(1,4),(2,0),(3,1),(4,0),(6,3),(6,5))
+soldiers = ((0,0),(0,1),(0,4),(1,4),(2,0),(3,1),(3,6),(4,0),(6,3),(6,5))
 exits = ((0,0),(0,1),(0,2),(0,3),(0,4),(0,5),(0,6),(6,0),(6,1),(6,2),(6,3),(6,4),(6,5),(6,6),(1,0),(2,0),(3,0),(4,0),(5,0),(1,6),(2,6),(3,6),(4,6),(5,6))
 
 class HnefataflProblem(SearchProblem):

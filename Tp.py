@@ -62,10 +62,9 @@ class TpProblem(SearchProblem):
         if len(state[1]) > 0:
             for people in state[1]:
                 distances.append(people)
-        else:
-            for pos in orillas:
-                distances.append(pos)
-        return min([manhattan(x, state[0]) for x in distances])
+        for pos in orillas:
+            distances.append(pos)
+        return sum([manhattan(x, state[0]) for x in distances])
 
 
 def is_valid(pos,state):
@@ -80,7 +79,7 @@ def manhattan(pos1,pos2):
     return abs(x2 - x1) + abs(y2 - y1)
 
 my_viewer = BaseViewer()
-result = depth_first(TpProblem(state), graph_search=True, viewer=my_viewer)
+result = astar(TpProblem(state), graph_search=True, viewer=my_viewer)
 print(my_viewer.stats)
 print(salve_pibe)
 print(my_viewer.solution_node)
