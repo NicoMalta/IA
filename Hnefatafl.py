@@ -7,17 +7,7 @@ exits = ((0,0),(0,1),(0,2),(0,3),(0,4),(0,5),(0,6),(6,0),(6,1),(6,2),(6,3),(6,4)
 
 class HnefataflProblem(SearchProblem):
     def is_goal(self,state):
-        row_king, col_king = state
-        if row_king == 0:
-            return True
-        elif row_king == 6:
-            return True
-        elif col_king == 0:
-            return True
-        elif col_king == 6:
-            return True
-        else:
-            return False
+        return state in exits
 
     def cost(self,s1,a,s2):
         return 1
