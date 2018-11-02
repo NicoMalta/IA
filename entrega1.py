@@ -60,18 +60,26 @@ class TpProblem(SearchProblem):
 
     def heuristic(self,state):
         distances = []
-        people_distance = 0
-        first_people = 0
+        people_distance = []
+        maxLarga = 0
         if len(state[1]) > 0:
             for people in state[1]:
                 distances.append(people)
-            first_people = min([manhattan(x, state[0]) for x in distances])
-            people_distance = sum([manhattan(x, state[0]) for x in distances])
-        distances.clear()
+            people_distance.append([manhattan(x, state[0]) for x in distances])
+            maxLarga = max(people_distance[0])
+
+            posicion = people_distance[0].index(maxLarga)
+            posicion_persona = distances[posicion]
+        list_orillas = []
         for pos in orillas:
-            distances.append(pos)
-        minium_distance = min([manhattan(x, state[0]) for x in distances])
-        return minium_distance + people_distance + first_people
+            list_orillas.append(pos)
+        if len(state[1]) > 0:
+            minium_distance = min([manhattan(x, posicion_persona) for x in list_orillas])
+        else:
+            minium_distance = min([manhattan(x, state[0]) for x in list_orillas])
+        
+        return minium_distance + maxLarga
+
 
 
 def is_valid(pos,state):
@@ -83,13 +91,13 @@ def is_valid(pos,state):
 def manhattan(pos1,pos2):
     x1, y1 = pos1
     x2, y2 = pos2
-    return abs(x2 - x1) + abs(y2 - y1)
+    return (abs(x2 - x1) + abs(y2 - y1))
 
-def resolver(metodo_busqueda,posiciones_personas:
-    result = astar(TpProblem(state), graph_search=True, viewer=my_viewer)
-    return result
+#def resolver(metodo_busqueda,posiciones_personas:
+    
+#    return result
 my_viewer = BaseViewer()
-
+result = astar(TpProblem(state), graph_search=True, viewer=my_viewer)
 print(my_viewer.stats)
 print(salve_pibe)
 print(my_viewer.solution_node)
