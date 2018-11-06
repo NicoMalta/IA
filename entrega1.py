@@ -1,6 +1,6 @@
 
 # coding: utf-8
-from simpleai.search import astar, breadth_first, SearchProblem,depth_first
+from simpleai.search import astar, breadth_first, SearchProblem,depth_first,greedy
 from simpleai.search.viewers import WebViewer, BaseViewer
 
 orillas = ((0,0),(0,1),(0,2),(0,3),(0,4),(0,5),(1,0),(2,0),(3,0),(4,0),(5,0),(5,1), (5,2),(5,3),(5,4),(5,5),(4,5),(3,5),(4,5))
@@ -89,10 +89,21 @@ def manhattan(pos1,pos2):
     x2, y2 = pos2
     return abs(x2 - x1) + abs(y2 - y1)
 
-#def resolver(metodo_busqueda,posiciones_personas:
-    
-#    return result
-my_viewer = BaseViewer()
-result = astar(TpProblem(state), graph_search=True, viewer=my_viewer)
-print(my_viewer.stats)
-print(my_viewer.solution_node)
+def resolver(metodo_busqueda,posiciones_personas):
+    state = ((0,0),(posiciones_personas),())
+
+    my_viewer = BaseViewer()
+    if 'astar':
+        result = astar(TpProblem(state), graph_search=True, viewer=my_viewer)
+    elif 'breadth_first':
+        result = breadth_first(TpProblem(state), graph_search=True, viewer=my_viewer)
+    elif 'depth_first':
+        result = depth_first(TpProblem(state), graph_search=True, viewer=my_viewer)
+    elif 'greedy':
+        result = greedy(TpProblem(state), graph_search=True, viewer=my_viewer)
+    return result
+
+#
+#
+#print(my_viewer.stats)
+#print(my_viewer.solution_node)

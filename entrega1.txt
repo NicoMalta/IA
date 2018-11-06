@@ -1,7 +1,1 @@
-Al llamar a esta función, se debe ejecutar la búsqueda especificada y 
-devolver el nodo resultante (no el estado, sino el nodo, lo que devuelve 
-el método de búsqueda de SimpleAI).
-
-Las estadísticas deben subirse también al repositorio en un archivo 
-llamado entrega1.txt con una linea por cada caso, con el siguiente formato para cada una:
 numero_de_caso:cantidad_nodos_visitados,profundidad_solucion,costo_solucion,largo_maximo_frontera
