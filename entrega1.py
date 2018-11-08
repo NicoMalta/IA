@@ -61,27 +61,7 @@ class TpProblem(SearchProblem):
     def heuristic(self,state):
         distances = []
         people_distance = []
-<<<<<<< HEAD
-        maxLarga = 0
-        if len(state[1]) > 0:
-            for people in state[1]:
-                distances.append(people)
-            people_distance.append([manhattan(x, state[0]) for x in distances])
-            maxLarga = max(people_distance[0])
 
-            posicion = people_distance[0].index(maxLarga)
-            posicion_persona = distances[posicion]
-        list_orillas = []
-        for pos in orillas:
-            list_orillas.append(pos)
-        if len(state[1]) > 0:
-            minium_distance = min([manhattan(x, posicion_persona) for x in list_orillas])
-        else:
-            minium_distance = min([manhattan(x, state[0]) for x in list_orillas])
-        
-        return minium_distance + maxLarga
-
-=======
         more_distance = 0
         if len(state[1]) > 0:
             for people in state[1]:
@@ -97,7 +77,7 @@ class TpProblem(SearchProblem):
         else:
             minium_distance = min([manhattan(x, state[0]) for x in distances])
         return minium_distance + more_distance + len(state[1])
->>>>>>> 3550041541d3221faf0dda13a2c843f3c6ee10ec
+
 
 
 def is_valid(pos,state):
@@ -111,16 +91,7 @@ def manhattan(pos1,pos2):
     x2, y2 = pos2
     return (abs(x2 - x1) + abs(y2 - y1))
 
-<<<<<<< HEAD
-#def resolver(metodo_busqueda,posiciones_personas:
-    
-#    return result
-my_viewer = BaseViewer()
-result = astar(TpProblem(state), graph_search=True, viewer=my_viewer)
-print(my_viewer.stats)
-print(salve_pibe)
-print(my_viewer.solution_node)
-=======
+
 def resolver(metodo_busqueda,posiciones_personas):
     state = ((0,0),(posiciones_personas),())
 
@@ -133,10 +104,9 @@ def resolver(metodo_busqueda,posiciones_personas):
         result = depth_first(TpProblem(state), graph_search=True, viewer=my_viewer)
     elif 'greedy':
         result = greedy(TpProblem(state), graph_search=True, viewer=my_viewer)
+
     return result
 
-#
-#
-#print(my_viewer.stats)
-#print(my_viewer.solution_node)
->>>>>>> 3550041541d3221faf0dda13a2c843f3c6ee10ec
+    
+    
+    

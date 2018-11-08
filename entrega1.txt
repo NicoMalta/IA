@@ -1,1 +1,4 @@
-numero_de_caso:cantidad_nodos_visitados,profundidad_solucion,costo_solucion,largo_maximo_frontera
+1:14,8,7,18
+2:14,8,7,18
+3:36,11,10,53
+4:36,11,10,53
